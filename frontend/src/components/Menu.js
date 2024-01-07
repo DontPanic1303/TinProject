@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import User from "../Model/User"
+import "./Menu.css"
 
 const Menu = () => {
 
@@ -20,6 +21,9 @@ const Menu = () => {
                 Rodzaj: 'Klient',
                 Adres: 'ul. Example 123'
             };
+            setLogin("")
+            setPassword("")
+            console.log("zalogowano")
             setUser(new User(userFromRow))
             setIsLoggedIn(true);
         }
@@ -31,22 +35,25 @@ const Menu = () => {
     }
 
     return (
-       <div>
-           <div >
-                <Link to="/pizza">Zamów pizze</Link>
+       <div class="top-side">
+           <div class="left-side">
+                <Link to="/pizza" class="link-container">Zamów pizze</Link>
            </div>
-           <div>
+           <div class="right-side">
                {isLoggedIn ? (
-                   <div>
+                   <div class="login-container">
                        {user.Imie}
                        {user.Nazwisko}
                        <button onClick={handleLogout}>Wyloguj</button>
                    </div>
                ) : (
-                    <div>
-                        Login: <input type="text" value={login}/>
-                        Haslo: <input type="password" value={password}/>
+                    <div class="login-container">
+                        Login: <input type="text" value={login} onChange={(e) => setLogin(e.target.value)} />
+                        Haslo: <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         <button onClick={handleLogin}>Zaloguj</button>
+                        <Link to="/registration">
+                            <button>Zarejestuj się</button>
+                        </Link>
                     </div>
                )}
            </div>
