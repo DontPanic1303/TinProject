@@ -4,6 +4,7 @@ import Menu from './components/Menu';
 import {NotFound} from "./components/NotFound";
 import Pizza from "./components/Pizza";
 import Registration from "./components/Registration";
+import Information from "./components/Information";
 import './App.css';
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/pizza" element={<Pizza />} />
           <Route path="*" element={<NotFound />} />
             <Route path="/registration" element={<Registration />} />
+            <Route path="/information" element={<Information/>} />
         </Routes>
       </Router>
   );

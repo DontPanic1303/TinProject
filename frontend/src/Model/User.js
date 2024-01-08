@@ -6,6 +6,7 @@ class User {
         this.Rodzaj = Rodzaj;
         this.Adres = Adres;
     }
+
 }
 
 export default User

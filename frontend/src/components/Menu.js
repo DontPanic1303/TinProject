@@ -1,17 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import User from "../Model/User"
 import "./Menu.css"
+import {useSelector, useDispatch} from "react-redux";
+import {setUser, deSetUser} from "../features/user/userSlice";
+import { useNavigate } from 'react-router-dom';
 
 const Menu = () => {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
-    const [user, setUser] = useState(null);
     const [login, setLogin] = useState();
     const [password, setPassword] = useState()
-
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.user);
+    const isLoggedIn = useSelector((state)=> state.user.isLoggedIn);
+    const navigate = useNavigate();
     const handleLogin = () => {
         if (login === 'adm' && password === '123') {
             const userFromRow = {
@@ -24,27 +26,25 @@ const Menu = () => {
             setLogin("")
             setPassword("")
             console.log("zalogowano")
-            setUser(new User(userFromRow))
-            setIsLoggedIn(true);
+            dispatch(setUser(JSON.stringify(userFromRow)));
         }
     }
 
     const handleLogout = () => {
-        setUser(null)
-        setIsLoggedIn(false);
+        dispatch(deSetUser());
+        navigate('/pizza')
     }
 
     return (
        <div class="top-side">
            <div class="left-side">
                 <Link to="/pizza" class="link-container">Zamów pizze</Link>
+               {isLoggedIn && (<Link to="/information" class="link-container">Informacie o koncie</Link>)}
            </div>
            <div class="right-side">
                {isLoggedIn ? (
                    <div class="login-container">
-                       {user.Imie}
-                       {user.Nazwisko}
-                       <button onClick={handleLogout}>Wyloguj</button>
+                       {user.Imie} {user.Nazwisko} <button onClick={handleLogout}>Wyloguj</button>
                    </div>
                ) : (
                     <div class="login-container">
