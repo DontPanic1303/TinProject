@@ -5,6 +5,7 @@ import {NotFound} from "./components/NotFound";
 import Pizza from "./components/Pizza";
 import Registration from "./components/Registration";
 import Information from "./components/Information";
+import UserList from "./components/UserList"
 import './App.css';
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
             <Route path="/registration" element={<Registration />} />
             <Route path="/information" element={<Information/>} />
+            <Route path="/userList" element={<UserList/>} />
         </Routes>
       </Router>
   );

@@ -3,7 +3,8 @@ import user from "../../Model/User"
 
 const initialState = {
     user: null,
-    isLoggedIn : false
+    isLoggedIn : false,
+    isAdmin : false,
 }
 
 export const userSlice = createSlice({
@@ -13,10 +14,12 @@ export const userSlice = createSlice({
         setUser: (state, action) => {
             state.user = JSON.parse(action.payload);
             state.isLoggedIn = true;
+            state.isAdmin = state.user.Rodzaj === "Admin";
         },
         deSetUser : (state) => {
             state.user = null;
             state.isLoggedIn = false;
+            state.isAdmin = false;
         },
     }
 });

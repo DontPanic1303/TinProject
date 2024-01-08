@@ -1,5 +1,8 @@
+import {useSelector, useDispatch} from "react-redux";
 import React, { useState } from 'react';
 import "./Registration.css"
+import {setUser} from "../features/user/userSlice";
+import { useNavigate } from 'react-router-dom';
 
 const Formularz = () => {
     const [formData, setFormData] = useState({
@@ -10,7 +13,8 @@ const Formularz = () => {
         Login: '',
         Haslo: ''
     });
-
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevData => ({
@@ -21,7 +25,8 @@ const Formularz = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Tutaj możesz przetworzyć dane, np. wysłać na serwer
+        dispatch(setUser(JSON.stringify(formData)));
+        navigate('/pizza')
         console.log('Wysłano dane:', formData);
     };
 

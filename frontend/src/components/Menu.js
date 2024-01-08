@@ -13,6 +13,7 @@ const Menu = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.user);
     const isLoggedIn = useSelector((state)=> state.user.isLoggedIn);
+    const isAdmin = useSelector((state)=> state.user.isAdmin);
     const navigate = useNavigate();
     const handleLogin = () => {
         if (login === 'adm' && password === '123') {
@@ -20,13 +21,14 @@ const Menu = () => {
                 Id_osoba: 1,
                 Imie: 'John',
                 Nazwisko: 'Doe',
-                Rodzaj: 'Klient',
+                Rodzaj: 'Admin',
                 Adres: 'ul. Example 123'
             };
             setLogin("")
             setPassword("")
             console.log("zalogowano")
             dispatch(setUser(JSON.stringify(userFromRow)));
+            navigate('/pizza')
         }
     }
 
@@ -40,6 +42,7 @@ const Menu = () => {
            <div class="left-side">
                 <Link to="/pizza" class="link-container">Zamów pizze</Link>
                {isLoggedIn && (<Link to="/information" class="link-container">Informacie o koncie</Link>)}
+               {isAdmin && (<Link to="/userList" class="link-container">Lista urzytkowników</Link>)}
            </div>
            <div class="right-side">
                {isLoggedIn ? (
