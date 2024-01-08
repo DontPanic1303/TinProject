@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import {useSelector} from "react-redux";
 const UserList = () =>{
     const  [users, setUsers] = useState([]);
+    const isAdmin = useSelector((state)=> state.user.isAdmin);
 
 
     // const fetchUsers = async () => {
@@ -68,7 +70,16 @@ const UserList = () =>{
 
     return (
         <div>
-            {generateUserListHTML()}
+            {
+                isAdmin ? (
+                    generateUserListHTML()
+                ) : (
+                    <div>
+                        <h1>Nie jestes administratorem</h1>
+                    </div>
+                )
+            }
+
         </div>
     );
 }
