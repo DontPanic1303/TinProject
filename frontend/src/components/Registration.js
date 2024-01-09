@@ -8,7 +8,6 @@ const Formularz = () => {
     const [formData, setFormData] = useState({
         Imie: '',
         Nazwisko: '',
-        Rodzaj: '',
         Adres: '',
         Login: '',
         Haslo: ''
@@ -23,11 +22,27 @@ const Formularz = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(setUser(JSON.stringify(formData)));
-        navigate('/pizza')
-        console.log('Wysłano dane:', formData);
+        try {
+            const response = await fetch('http://localhost/user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Błąd podczas wysyłania danych');
+            }
+
+            dispatch(setUser(JSON.stringify(formData)));
+            navigate('/pizza');
+            console.log('Wysłano dane:', formData);
+        } catch (error) {
+            console.error('Błąd:', error.message);
+        }
     };
 
     return (
@@ -42,12 +57,6 @@ const Formularz = () => {
             <label>
                 Nazwisko:
                 <input type="text" name="Nazwisko" value={formData.Nazwisko} onChange={handleChange} />
-            </label>
-            <br />
-
-            <label>
-                Rodzaj:
-                <input type="text" name="Rodzaj" value={formData.Rodzaj} onChange={handleChange} />
             </label>
             <br />
 

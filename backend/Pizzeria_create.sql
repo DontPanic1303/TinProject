@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2024-01-06 17:05:03.203
+-- Last modification date: 2024-01-09 13:16:58.559
 
 -- tables
 -- Table: Osoba
@@ -24,28 +24,28 @@ CREATE TABLE Pizza (
 
 -- Table: Pizza_do_zamowienia
 CREATE TABLE Pizza_do_zamowienia (
-    Pizzer integer NOT NULL,
-    Zamowiania_Id_zam integer NOT NULL,
-    Pizza_Id_pizzy integer NOT NULL,
+    Pizzer integer,
+    Id_zam integer NOT NULL,
+    Id_pizzy integer NOT NULL,
     Ilosc integer NOT NULL,
-    CONSTRAINT Pizza_do_zamowienia_pk PRIMARY KEY (Zamowiania_Id_zam,Pizza_Id_pizzy),
-    CONSTRAINT Pizza_do_zamowienia_Osoba FOREIGN KEY (Pizzer)
-    REFERENCES Osoba (Id_osoba),
-    CONSTRAINT Pizza_do_zamowienia_Zamowiania FOREIGN KEY (Zamowiania_Id_zam)
+    CONSTRAINT Pizza_do_zamowienia_pk PRIMARY KEY (Id_zam,Id_pizzy),
+    CONSTRAINT Pizza_do_zamowienia_Zamowiania FOREIGN KEY (Id_zam)
     REFERENCES Zamowiania (Id_zam),
-    CONSTRAINT Pizza_do_zamowienia_Pizza FOREIGN KEY (Pizza_Id_pizzy)
-    REFERENCES Pizza (Id_pizzy)
+    CONSTRAINT Pizza_do_zamowienia_Pizza FOREIGN KEY (Id_pizzy)
+    REFERENCES Pizza (Id_pizzy),
+    CONSTRAINT Pizza_do_zamowienia_Osoba FOREIGN KEY (Pizzer)
+    REFERENCES Osoba (Id_osoba)
 );
 
 -- Table: Zamowiania
 CREATE TABLE Zamowiania (
     Id_zam integer NOT NULL CONSTRAINT Zamowiania_pk PRIMARY KEY,
     data datetime NOT NULL,
-    Dostawca integer NOT NULL,
+    Dostawca integer,
     Odbiorca integer NOT NULL,
-    CONSTRAINT Zamowiania_Osoba1 FOREIGN KEY (Dostawca)
-    REFERENCES Osoba (Id_osoba),
     CONSTRAINT Zamowiania_Osoba FOREIGN KEY (Odbiorca)
+    REFERENCES Osoba (Id_osoba),
+    CONSTRAINT Zamowiania_Osoba1 FOREIGN KEY (Dostawca)
     REFERENCES Osoba (Id_osoba)
 );
 
