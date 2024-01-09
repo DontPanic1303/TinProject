@@ -25,7 +25,8 @@ const Formularz = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost/user', {
+            console.log(JSON.stringify(formData));
+            const response = await fetch('http://localhost:3001/user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

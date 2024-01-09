@@ -1,9 +1,13 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const port = 3001;
 app.use(express.urlencoded({ extended: true }));
 const UserController = require('./controller/UserController') ;
 const PizzaController = require('./controller/PizzaController') ;
+
+app.use(cors());
+app.use(express.json());
 
 app.post('/login',UserController.loginUser);
 

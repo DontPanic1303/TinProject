@@ -1,65 +1,29 @@
-import { useState, useEffect } from 'react';
-import {useSelector} from "react-redux";
-const UserList = () =>{
-    const  [users, setUsers] = useState([]);
-    const isAdmin = useSelector((state)=> state.user.isAdmin);
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
+const UserList = () => {
+    const [users, setUsers] = useState([]);
+    const isAdmin = useSelector((state) => state.user.isAdmin);
 
-    // const fetchUsers = async () => {
-    //     try {
-    //         const response = await fetch('http://localhost/users');
-    //         const users = await response.json();
-    //         return users;
-    //     } catch (error) {
-    //         console.error('Błąd pobierania danych użytkowników:', error);
-    //         return [];
-    //     }
-    // };
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch('http://localhost:3001/users');
+            const usersData = await response.json();
+            console.log(usersData)
+            return usersData;
+        } catch (error) {
+            console.error('Błąd pobierania danych użytkowników:', error);
+            return [];
+        }
+    };
 
-    useEffect(() => {
-        // Tutaj możesz umieścić logikę pobierania użytkowników z serwera
-        // np. wywołując funkcję fetchUsers().
-
-        // Przykład tymczasowy z hardcoded danymi
-        const hardcodedUsers = [
-            {
-                "id": 1,
-                "imie": "John",
-                "nazwisko": "Doe",
-                "rodzaj": "Klient",
-                "adres": "ul. Example 123"
-            },
-            {
-                "id": 2,
-                "imie": "Jane",
-                "nazwisko": "Smith",
-                "rodzaj": "Administrator",
-                "adres": "ul. Sample 456"
-            },
-            {
-                "id": 3,
-                "imie": "Bob",
-                "nazwisko": "Johnson",
-                "rodzaj": "Klient",
-                "adres": "ul. Test 789"
-            }
-        ];
-
-        setUsers(hardcodedUsers);
-    });
-
-
-    const generateUserListHTML = () => {
-        return users.map((user) => (
-            <div key={user.id}>
-                <p>ID: {user.id}</p>
-                <p>Imię: {user.imie}</p>
-                <p>Nazwisko: {user.nazwisko}</p>
-                <p>Rodzaj: {user.rodzaj}</p>
-                {user.rodzaj === 'Klient' ? <button onClick={() => deleteUser(user.id)}>Usuń</button> : ''}
-                <p>Adres: {user.adres}</p>
-            </div>
-        ));
+    const generateUserListHTML = async () => {
+        try {
+            const usersData = await fetchUsers();
+            setUsers(usersData);
+        } catch (error) {
+            console.error('Błąd generowania listy użytkowników:', error);
+        }
     };
 
     const deleteUser = (userId) => {
@@ -67,20 +31,34 @@ const UserList = () =>{
         console.log(`Usuwanie użytkownika o ID: ${userId}`);
     };
 
+    useEffect(() => {
+        generateUserListHTML();
+    }, []);
 
     return (
         <div>
-            {
-                isAdmin ? (
-                    generateUserListHTML()
-                ) : (
-                    <div>
-                        <h1>Nie jestes administratorem</h1>
+            {isAdmin ? (
+                users.map((user) => (
+                    <div key={user.id}>
+                        <p>ID: {user.id}</p>
+                        <p>Imię: {user.imie}</p>
+                        <p>Nazwisko: {user.nazwisko}</p>
+                        <p>Rodzaj: {user.rodzaj}</p>
+                        {user.rodzaj === 'Klient' ? (
+                            <button onClick={() => deleteUser(user.id)}>Usuń</button>
+                        ) : (
+                            ''
+                        )}
+                        <p>Adres: {user.adres}</p>
                     </div>
-                )
-            }
-
+                ))
+            ) : (
+                <div>
+                    <h1>Nie jesteś administratorem</h1>
+                </div>
+            )}
         </div>
     );
-}
-export default UserList
+};
+
+export default UserList;

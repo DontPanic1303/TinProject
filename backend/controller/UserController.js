@@ -53,16 +53,16 @@ async function loginUser(req, res) {
 }
 
 async function addUser(req, res) {
-    const { Imie, Nazwisko, Login, Haslo, adres } = req.body;
+    const { Imie, Nazwisko, Login, Haslo, Adres } = req.body;
     const Rodzaj = 'Klient';
-
+    console.log(req.body);
     try {
         const { maxId } = await getAsync('SELECT MAX(Id_osoba) AS maxId FROM Osoba') || { maxId: 0 };
         const newId = maxId + 1;
 
         await runAsync(
             'INSERT INTO Osoba (Id_osoba, Imie, Nazwisko, Login, Haslo, Rodzaj, adres) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            [newId, Imie, Nazwisko, Login, Haslo, Rodzaj, adres]
+            [newId, Imie, Nazwisko, Login, Haslo, Rodzaj, Adres]
         );
 
         res.json({ message: 'Osoba została dodana', id: newId });
@@ -124,7 +124,31 @@ function getAllUsers(req, res) {
             return res.status(500).json({error: 'Błąd bazy danych'});
         }
 
-        res.json(rows);
+        const hardcodedUsers = [
+            {
+                "id": 1,
+                "imie": "John",
+                "nazwisko": "Doe",
+                "rodzaj": "Klient",
+                "adres": "ul. Example 123"
+            },
+            {
+                "id": 2,
+                "imie": "Jane",
+                "nazwisko": "Smith",
+                "rodzaj": "Administrator",
+                "adres": "ul. Sample 456"
+            },
+            {
+                "id": 3,
+                "imie": "Bob",
+                "nazwisko": "Johnson",
+                "rodzaj": "Klient",
+                "adres": "ul. Test 789"
+            }
+        ];
+
+        res.json(hardcodedUsers);
     });
 }
 
