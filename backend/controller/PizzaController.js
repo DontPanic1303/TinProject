@@ -28,7 +28,7 @@ function getAsync(query, params) {
 }
 
 function getPizza(req, res) {
-    const query = 'SELECT Nazwa, cena, rozmiar, skladniki FROM pizza';
+    const query = 'SELECT * FROM pizza';
 
     db.all(query, [], (err, rows) => {
         if (err) {
@@ -37,7 +37,31 @@ function getPizza(req, res) {
             return;
         }
 
-        res.json(rows);
+        const hardcodedPizzas = [
+            {
+                "id_pizzy": 1,
+                "Nazwa": "Cztery sery",
+                "cena": 40,
+                "rozmiar": 32,
+                "Skladniki": "ser1, ser2, ser3, ser4"
+            },
+            {
+                "id_pizzy": 2,
+                "Nazwa": "Zwykła",
+                "cena": 35,
+                "rozmiar": 45,
+                "Skladniki": "ser, szynka, pieczarki"
+            },
+            {
+                "id_pizzy": 3,
+                "Nazwa": "Ostra",
+                "cena": 80,
+                "rozmiar": 60,
+                "Skladniki": "jalapeno, fasola czerwona, ser, szynka"
+            }
+        ];
+
+        res.json(hardcodedPizzas);
     });
 }
 

@@ -20,8 +20,22 @@ const Menu = () => {
             const userFromRow = {
                 Id_osoba: 1,
                 Imie: 'John',
-                Nazwisko: 'Doe',
+                Nazwisko: 'Admin',
                 Rodzaj: 'Admin',
+                Adres: 'ul. Example 123'
+            };
+            setLogin("")
+            setPassword("")
+            console.log("zalogowano")
+            dispatch(setUser(JSON.stringify(userFromRow)));
+            navigate('/pizza')
+        }
+            if (login === 'user' && password === '123') {
+            const userFromRow = {
+                Id_osoba: 2,
+                Imie: 'John',
+                Nazwisko: 'Klient',
+                Rodzaj: 'Klient',
                 Adres: 'ul. Example 123'
             };
             setLogin("")

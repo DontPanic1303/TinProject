@@ -148,7 +148,7 @@ function getAllUsers(req, res) {
             }
         ];
 
-        res.json(hardcodedUsers);
+        res.json(rows);
     });
 }
 

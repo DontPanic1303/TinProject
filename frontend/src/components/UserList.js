@@ -39,17 +39,17 @@ const UserList = () => {
         <div>
             {isAdmin ? (
                 users.map((user) => (
-                    <div key={user.id}>
-                        <p>ID: {user.id}</p>
-                        <p>Imię: {user.imie}</p>
-                        <p>Nazwisko: {user.nazwisko}</p>
-                        <p>Rodzaj: {user.rodzaj}</p>
-                        {user.rodzaj === 'Klient' ? (
+                    <div key={user.Id_osoba}>
+                        <p>ID: {user.Id_osoba}</p>
+                        <p>Imię: {user.Imie}</p>
+                        <p>Nazwisko: {user.Nazwisko}</p>
+                        <p>Rodzaj: {user.Rodzaj}</p>
+                        {user.Rodzaj === 'Klient' ? (
                             <button onClick={() => deleteUser(user.id)}>Usuń</button>
                         ) : (
                             ''
                         )}
-                        <p>Adres: {user.adres}</p>
+                        <p>Adres: {user.Adres}</p> <br/>
                     </div>
                 ))
             ) : (
