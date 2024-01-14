@@ -27,17 +27,36 @@ const Information = () => {
         }
     }, [user.Id_osoba, isLoggedIn]);
 
+    const deleteUser = async (userId) => {
+        console.log(userId)
+        try {
+            const response = await fetch(`http://localhost:3001/user/${userId}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Błąd podczas wysyłania danych');
+            }
+            await generateUserListHTML();
+        } catch (e) {
+            console.log(e)
+        }
+        console.log(`Usuwanie użytkownika o ID: ${userId}`);
+    };
+
     return (
         <div>
             {isLoggedIn ? (
                 <div>
                     <h1>Informacje o koncie</h1>
                     <ul>
+                        <li>{user.Id_osoba}</li>
                         <li><strong>Imię:</strong> {user.Imie}</li>
                         <li><strong>Nazwisko:</strong> {user.Nazwisko}</li>
                         <li><strong>Rodzaj:</strong> {user.Rodzaj}</li>
                         <li><strong>Adres:</strong> {user.Adres}</li>
                     </ul>
+                    <button onClick={() => deleteUser(user.Id_osoba)}>Usuń konto</button>
                     <h2>Zamówienia</h2>
                     <div>
                         {orders.map((order) => (

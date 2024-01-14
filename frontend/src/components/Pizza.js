@@ -93,8 +93,14 @@ const Pizza = () => {
         <div class="top-side">
             <div class="left-side">
             <h1>Pizze</h1>
-            <div>
-                {isAdmin && (
+            {pizzas.map((pizza) => (
+                <PizzaItem key={pizza.id_pizzy} pizza={pizza} isAdmin={isAdmin} handleModify={handleModify} addPizzaToOrder={addPizzaToOrder}/>
+            ))}
+            </div>
+            <div class="right-side">
+                {isAdmin ? (
+                    <div>
+                    <p>Dodaj pizze</p>
                     <form onSubmit={handleSubmit}>
                         <label>
                             Nazwa:
@@ -114,29 +120,33 @@ const Pizza = () => {
                         </label> <br/>
                         <button type="submit">Dodaj</button>
                     </form>
-                )}
-            </div>
-            {pizzas.map((pizza) => (
-                <PizzaItem key={pizza.id_pizzy} pizza={pizza} isAdmin={isAdmin} handleModify={handleModify} addPizzaToOrder={addPizzaToOrder}/>
-            ))}
-            </div>
-            <div class="right-side">
-                <h1>Zamówienie</h1>
-                Adres: {isLoggedIn ? (user.Adres) : (
-                    <form onSubmit={handleSubmitOrder}>
-                        <label>
-                            <input type="text" name="Adres" value={formData.Nazwa} onChange={handleChange}/> <br/>
-                        </label>
-                        <button type="submit">Zamów</button> <br/>
-                    </form>
-            )}
-                {pizzasOrder.map((pizza) => (
-                    <div key={pizza.id_pizzy}>
-                        <p>Nazwa: {pizza.nazwa}</p>
-                        <p>Ilość: {pizza.ilosc}</p>
-                        <button onClick={() => removePizzaFromOrder(pizza.id_pizzy)}>Usuń</button>
                     </div>
-                ))}
+                ) : (
+                    <div>
+                    <h1>Zamówienie</h1>
+                    Adres: {isLoggedIn ? (
+                        <div>
+                            {user.Adres}<br/>
+                            <button onClick={() => handleSubmitOrder}>Zamów</button> <br/>
+                        </div>
+                    ) : (
+
+                        <form onSubmit={handleSubmitOrder}>
+                            <label>
+                                <input type="text" name="Adres" value={formData.Nazwa} onChange={handleChange}/> <br/>
+                            </label>
+                            <button type="submit">Zamów</button> <br/>
+                        </form>
+                    )}
+                        {pizzasOrder.map((pizza) => (
+                            <div key={pizza.id_pizzy}>
+                                <p>Nazwa: {pizza.nazwa}</p>
+                                <p>Ilość: {pizza.ilosc}</p>
+                             <button onClick={() => removePizzaFromOrder(pizza.id_pizzy)}>Usuń</button>
+                        </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );

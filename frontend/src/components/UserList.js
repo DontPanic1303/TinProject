@@ -9,12 +9,29 @@ const UserList = () => {
         try {
             const response = await fetch('http://localhost:3001/users');
             const usersData = await response.json();
-            console.log(usersData)
+            console.log(usersData);
             return usersData;
         } catch (error) {
             console.error('Błąd pobierania danych użytkowników:', error);
             return [];
         }
+    };
+
+    const deleteUser = async (userId) => {
+        console.log(userId);
+        try {
+            const response = await fetch(`http://localhost:3001/user/${userId}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Błąd podczas wysyłania danych');
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        generateUserListHTML()
+        console.log(`Usuwanie użytkownika o ID: ${userId}`);
     };
 
     const generateUserListHTML = async () => {
@@ -24,11 +41,6 @@ const UserList = () => {
         } catch (error) {
             console.error('Błąd generowania listy użytkowników:', error);
         }
-    };
-
-    const deleteUser = (userId) => {
-        // Tutaj możesz umieścić logikę usuwania użytkownika
-        console.log(`Usuwanie użytkownika o ID: ${userId}`);
     };
 
     useEffect(() => {
@@ -45,11 +57,11 @@ const UserList = () => {
                         <p>Nazwisko: {user.Nazwisko}</p>
                         <p>Rodzaj: {user.Rodzaj}</p>
                         {user.Rodzaj === 'Klient' ? (
-                            <button onClick={() => deleteUser(user.id)}>Usuń</button>
+                            <button onClick={() => deleteUser(user.Id_osoba)}>Usuń</button>
                         ) : (
                             ''
                         )}
-                        <p>Adres: {user.Adres}</p> <br/>
+                        <p>Adres: {user.Adres}</p> <br />
                     </div>
                 ))
             ) : (

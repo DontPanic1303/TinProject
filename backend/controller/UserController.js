@@ -65,7 +65,9 @@ async function addUser(req, res) {
             [newId, Imie, Nazwisko, Login, Haslo, Rodzaj, Adres]
         );
 
-        res.json({ message: 'Osoba została dodana', id: newId });
+        const newUser = await getAsync('SELECT Id_osoba, Imie, Nazwisko, Rodzaj, adres FROM Osoba WHERE Id_osoba = ?',[newId])
+        console.log("New User", newUser)
+        res.json(newUser);
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: 'Błąd bazy danych' });
@@ -106,7 +108,7 @@ async function deleteUser(req, res) {
     const { id } = req.params;
 
     try {
-        await runAsync('DELETE FROM Pizza_do_zamowienia WHERE Zamowiania_id_zam IN (SELECT id_zam FROM Zamowienia WHERE Odbiorca = ?)', [id]);
+        await runAsync('DELETE FROM Pizza_do_zamowienia WHERE Id_zam IN (SELECT Id_zam FROM Zamowiania WHERE Odbiorca = ?)', [id]);
 
         await runAsync('DELETE FROM Osoba WHERE Id_osoba = ?', [id]);
 

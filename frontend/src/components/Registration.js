@@ -25,7 +25,7 @@ const Formularz = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log(JSON.stringify(formData));
+            console.log('Dane przed stringify:', formData);
             const response = await fetch('http://localhost:3001/user', {
                 method: 'POST',
                 headers: {
@@ -37,14 +37,19 @@ const Formularz = () => {
             if (!response.ok) {
                 throw new Error('Błąd podczas wysyłania danych');
             }
-
-            dispatch(setUser(JSON.stringify(formData)));
-            navigate('/pizza');
             console.log('Wysłano dane:', formData);
+            const responseData = await response.json();
+            loginUser(JSON.stringify(responseData));
         } catch (error) {
             console.error('Błąd:', error.message);
         }
     };
+
+    const loginUser =  (responseData) => {
+        console.log("Odebrane", responseData)
+        dispatch(setUser(responseData));
+        navigate('/pizza');
+    }
 
     return (
         <div className="form-body">
