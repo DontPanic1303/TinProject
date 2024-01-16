@@ -54,7 +54,7 @@ const Formularz = () => {
 
 
         try {
-            console.log('Dane przed stringify:', formData);
+            console.log('Wysłano dane:', formData);
             const response = await fetch('http://localhost:3001/user', {
                 method: 'POST',
                 headers: {
@@ -66,7 +66,6 @@ const Formularz = () => {
             if (!response.ok) {
                 throw new Error('Błąd podczas wysyłania danych');
             }
-            console.log('Wysłano dane:', formData);
             const responseData = await response.json();
             loginUser(JSON.stringify(responseData));
         } catch (error) {

@@ -31,6 +31,10 @@ app.get('/pizza',PizzaController.getPizza);
 
 app.post('/addPizza',PizzaController.addPizza);
 
+app.put('/pizza/:id',PizzaController.updatePizza);
+
+app.delete('/pizza/:id',PizzaController.deletePizza);
+
 app.listen(port, () => {
   console.log(`Aplikacja działa na http://localhost:${port}`);
 });

@@ -7,6 +7,8 @@ const Information = () => {
     const user = useSelector((state) => state.user.user);
     const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
     const [orders, setOrders] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [ordersPerPage] = useState(5)
     const [isEditing, setIsEditing] = useState(false);
     const [editedUser, setEditedUser] = useState({ ...user });
     const navigate = useNavigate();
@@ -94,6 +96,17 @@ const Information = () => {
         }));
     };
 
+    const indexOfLastOrder = currentPage * ordersPerPage;
+    const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+    const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+    const totalPages = Math.ceil(orders.length / ordersPerPage);
+
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setCurrentPage(newPage);
+        }
+    };
+
     return (
         <div>
             {isLoggedIn ? (
@@ -157,12 +170,19 @@ const Information = () => {
                                 <div>
                                     <h2>Zamówienia</h2>
                                     <div>
-                                        {orders.map((order) => (
+                                        {currentOrders.map((order) => (
                                             <div key={order.id_zamowienia}>
                                                 <p>ID Zamówienia: {order.id_zamowienia}</p>
                                             </div>
                                         ))}
                                     </div>
+                                    <ul className="pagination">
+                                        <li onClick={() => handlePageChange(1)}>|&lt;</li>
+                                        <li onClick={() => handlePageChange(currentPage - 1)}>&lt;</li>
+                                        <li>{currentPage}</li>
+                                        <li onClick={() => handlePageChange(currentPage + 1)}>&gt;</li>
+                                        <li onClick={() => handlePageChange(totalPages)}>&gt;|</li>
+                                    </ul>
                                 </div>
                             )}
                         </div>

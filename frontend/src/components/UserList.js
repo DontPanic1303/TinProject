@@ -132,7 +132,7 @@ const UserList = () => {
                                     <button onClick={() => makeDostawca(user.Id_osoba)}>Ustaw dostawce</button>
                                 </div>
                             ) : (
-                                ''
+                                <br/>
                             )}
                             <br />
                         </div>

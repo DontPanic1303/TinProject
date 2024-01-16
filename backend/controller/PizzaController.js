@@ -37,36 +37,12 @@ function getPizza(req, res) {
             return;
         }
 
-        const hardcodedPizzas = [
-            {
-                "id_pizzy": 1,
-                "Nazwa": "Cztery sery",
-                "cena": 40,
-                "rozmiar": 32,
-                "Skladniki": "ser1, ser2, ser3, ser4"
-            },
-            {
-                "id_pizzy": 2,
-                "Nazwa": "Zwykła",
-                "cena": 35,
-                "rozmiar": 45,
-                "Skladniki": "ser, szynka, pieczarki"
-            },
-            {
-                "id_pizzy": 3,
-                "Nazwa": "Ostra",
-                "cena": 80,
-                "rozmiar": 60,
-                "Skladniki": "jalapeno, fasola czerwona, ser, szynka"
-            }
-        ];
-
-        res.json(hardcodedPizzas);
+        res.json(rows);
     });
 }
 
 async function addPizza(req, res) {
-    const { Nazwa, cena, rozmiar, skladniki } = req.body;
+    const { Nazwa, cena, rozmiar, Skladniki } = req.body;
 
     try {
         const { maxId } = await getAsync('SELECT MAX(id_pizzy) AS maxId FROM pizza') || { maxId: 0 };
@@ -74,7 +50,7 @@ async function addPizza(req, res) {
 
         await runAsync(
             'INSERT INTO pizza (id_pizzy, Nazwa, cena, rozmiar, skladniki) VALUES (?, ?, ?, ?, ?)',
-            [newId, Nazwa, cena, rozmiar, skladniki]
+            [newId, Nazwa, cena, rozmiar, Skladniki]
         );
 
         res.json({ message: 'Pizza została dodana', id: newId });
@@ -84,7 +60,45 @@ async function addPizza(req, res) {
     }
 }
 
+async function deletePizza(req, res) {
+    const { id } = req.params;
+
+    try {
+        await runAsync('DELETE FROM Zamowiania WHERE Id_zam IN (SELECT Id_zam FROM Pizza_do_zamowienia WHERE Id_pizzy = ?)', [id]);
+
+        await runAsync('DELETE FROM Pizza_do_zamowienia WHERE Id_pizzy = ?', [id]);
+
+        await runAsync('DELETE FROM Pizza WHERE Id_pizzy = ?', [id]);
+
+        res.json({ message: 'Użytkownik i jego zamówienia zostały usunięte' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: 'Błąd bazy danych' });
+    }
+}
+
+async function updatePizza(req, res) {
+    const { id } = req.params;
+    const { Nazwa, cena, rozmiar, Skladniki } = req.body;
+
+    console.log(id, Nazwa, cena, rozmiar, Skladniki)
+
+    try {
+        await runAsync(
+            'UPDATE Pizza SET Nazwa = ?, cena = ?, rozmiar = ?, Skladniki = ? WHERE Id_pizzy = ?',
+            [Nazwa, cena, rozmiar, Skladniki, id]
+        );
+
+        res.json({ message: 'Pizza została zaktualizowana', id: id });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: 'Błąd bazy danych' });
+    }
+}
+
 module.exports = {
     getPizza,
-    addPizza
+    addPizza,
+    deletePizza,
+    updatePizza,
 };

@@ -138,6 +138,8 @@ async function deleteUser(req, res) {
     try {
         await runAsync('DELETE FROM Pizza_do_zamowienia WHERE Id_zam IN (SELECT Id_zam FROM Zamowiania WHERE Odbiorca = ?)', [id]);
 
+        await runAsync('DELETE FROM Zamowiania WHERE Odbiorca = ?', [id]);
+
         await runAsync('DELETE FROM Osoba WHERE Id_osoba = ?', [id]);
 
         res.json({ message: 'Użytkownik i jego zamówienia zostały usunięte' });
