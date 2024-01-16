@@ -14,7 +14,7 @@ export const userSlice = createSlice({
         setUser: (state, action) => {
             state.user = JSON.parse(action.payload);
             state.isLoggedIn = true;
-            state.isAdmin = state.user.Rodzaj === "Admin";
+            state.isAdmin = state.user.Rodzaj === "admin";
         },
         deSetUser : (state) => {
             state.user = null;

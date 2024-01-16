@@ -15,35 +15,39 @@ const Menu = () => {
     const isLoggedIn = useSelector((state)=> state.user.isLoggedIn);
     const isAdmin = useSelector((state)=> state.user.isAdmin);
     const navigate = useNavigate();
-    const handleLogin = () => {
-        if (login === 'adm' && password === '123') {
-            const userFromRow = {
-                Id_osoba: 1,
-                Imie: 'John',
-                Nazwisko: 'Admin',
-                Rodzaj: 'Admin',
-                Adres: 'ul. Example 123'
-            };
-            setLogin("")
-            setPassword("")
-            console.log("zalogowano")
-            dispatch(setUser(JSON.stringify(userFromRow)));
-            navigate('/pizza')
+    const handleLogin = async () => {
+        try {
+            const response = await fetch('http://localhost:3001/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ Login: login, Haslo: password }),
+            });
+
+            if (!response.ok) {
+                if (response.status === 404) {
+                    alert('Błędny login lub hasło');
+                    return;
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Błąd podczas logowania');
+                }
+            }
+
+            const userData = await response.json();
+            setNewUser(JSON.stringify(userData));
+
+        } catch (error) {
+            console.error('Błąd:', error.message);
         }
-            if (login === 'user' && password === '123') {
-            const userFromRow = {
-                Id_osoba: 2,
-                Imie: 'John',
-                Nazwisko: 'Klient',
-                Rodzaj: 'Klient',
-                Adres: 'ul. Example 123'
-            };
-            setLogin("")
-            setPassword("")
-            console.log("zalogowano")
-            dispatch(setUser(JSON.stringify(userFromRow)));
-            navigate('/pizza')
-        }
+    };
+
+    const setNewUser = (userData) =>{
+        dispatch(setUser(userData));
+        setLogin("");
+        setPassword("");
+        navigate('/pizza');
     }
 
     const handleLogout = () => {

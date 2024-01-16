@@ -6,6 +6,7 @@ const UserList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(5);
     const isAdmin = useSelector((state) => state.user.isAdmin);
+    const userLoged = useSelector((state) => state.user.user);
 
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
@@ -92,6 +93,7 @@ const UserList = () => {
         console.log(`Ustawanie admina o id: ${userId}`);
     };
 
+    const filteredUsers = currentUsers.filter(user => user.Id_osoba !== userLoged.Id_osoba);
     const generateUserListHTML = async () => {
         try {
             const usersData = await fetchUsers();
@@ -115,7 +117,7 @@ const UserList = () => {
         <div>
             {isAdmin ? (
                 <div>
-                    {currentUsers.map((user) => (
+                    {filteredUsers.map((user) => (
                         <div key={user.Id_osoba}>
                             <p>ID: {user.Id_osoba}</p>
                             <p>Imię: {user.Imie}</p>

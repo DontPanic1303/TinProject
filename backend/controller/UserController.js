@@ -76,12 +76,14 @@ async function addUser(req, res) {
 
 async function updateUser(req, res) {
     const { id } = req.params;
-    const { Imie, Nazwisko, Login, Haslo, Rodzaj, adres } = req.body;
+    const { Imie, Nazwisko, Adres } = req.body;
+
+    console.log(id, Imie, Nazwisko, Adres)
 
     try {
         await runAsync(
-            'UPDATE Osoba SET Imie = ?, Nazwisko = ?, Login = ?, Haslo = ?, Rodzaj = ?, adres = ? WHERE Id_osoba = ?',
-            [Imie, Nazwisko, Login, Haslo, Rodzaj, adres, id]
+            'UPDATE Osoba SET Imie = ?, Nazwisko = ?, adres = ? WHERE Id_osoba = ?',
+            [Imie, Nazwisko, Adres, id]
         );
 
         res.json({ message: 'Osoba została zaktualizowana', id: id });
