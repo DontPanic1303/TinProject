@@ -24,6 +24,35 @@ const Formularz = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (formData.Login.length === 0) {
+            alert('Login jest wymagany.');
+            return;
+        }
+
+        const isLoginAvailable = await checkLoginAvailability(formData.Login);
+
+        if (!isLoginAvailable) {
+            alert('Podany login jest już zajęty.');
+            return;
+        }
+
+        if (formData.Imie.trim().length < 2 || formData.Nazwisko.trim().length < 2) {
+            alert('Imię i nazwisko muszą mieć przynajmniej dwa znaki.');
+            return;
+        }
+
+        if (formData.Adres.trim().length < 5) {
+            alert('Adres musi mieć przynajmniej pięć znaków.');
+            return;
+        }
+
+        if (formData.Haslo.trim().length < 4) {
+            alert('Hasło musi mieć przynajmniej cztery znaki.');
+            return;
+        }
+
+
         try {
             console.log('Dane przed stringify:', formData);
             const response = await fetch('http://localhost:3001/user', {
@@ -50,6 +79,21 @@ const Formularz = () => {
         dispatch(setUser(responseData));
         navigate('/pizza');
     }
+
+    const checkLoginAvailability = async (login) => {
+        try {
+            const response = await fetch(`http://localhost:3001/user/login?login=${login}`);
+            if (!response.ok) {
+                throw new Error('Błąd podczas sprawdzania dostępności loginu');
+            }
+
+            const data = await response.json();
+            return data.available;
+        } catch (error) {
+            console.error('Błąd sprawdzania dostępności loginu:', error);
+            return false;
+        }
+    };
 
     return (
         <div className="form-body">

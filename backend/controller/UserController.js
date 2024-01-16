@@ -104,6 +104,32 @@ async function makeAdmin(req, res) {
     }
 }
 
+async function makePizzer(req, res) {
+    const { id } = req.params;
+
+    try {
+        await runAsync('UPDATE Osoba SET Rodzaj = ? WHERE Id_osoba = ?', ['pizzer', id]);
+
+        res.json({ message: 'Rodzaj użytkownika został zmieniony na pizzer' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: 'Błąd bazy danych' });
+    }
+}
+
+async function makeDostawca(req, res) {
+    const { id } = req.params;
+
+    try {
+        await runAsync('UPDATE Osoba SET Rodzaj = ? WHERE Id_osoba = ?', ['dostawca', id]);
+
+        res.json({ message: 'Rodzaj użytkownika został zmieniony na dostawca' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: 'Błąd bazy danych' });
+    }
+}
+
 async function deleteUser(req, res) {
     const { id } = req.params;
 
@@ -126,31 +152,30 @@ function getAllUsers(req, res) {
             return res.status(500).json({error: 'Błąd bazy danych'});
         }
 
-        const hardcodedUsers = [
-            {
-                "id": 1,
-                "imie": "John",
-                "nazwisko": "Doe",
-                "rodzaj": "Klient",
-                "adres": "ul. Example 123"
-            },
-            {
-                "id": 2,
-                "imie": "Jane",
-                "nazwisko": "Smith",
-                "rodzaj": "Administrator",
-                "adres": "ul. Sample 456"
-            },
-            {
-                "id": 3,
-                "imie": "Bob",
-                "nazwisko": "Johnson",
-                "rodzaj": "Klient",
-                "adres": "ul. Test 789"
-            }
-        ];
-
         res.json(rows);
+    });
+}
+
+function isLoginAvailable(req,res) {
+    const { login } = req.query;
+
+    const query = 'SELECT COUNT(*) AS count FROM Osoba WHERE Login = ?';
+
+    db.get(query, [login], (err, row) => {
+        if (err) {
+            console.error(err.message);
+            return;
+        }
+
+        const loginCount = row.count;
+
+        if (loginCount > 0) {
+            console.log('Podany login już istnieje.');
+            res.json({ available: false, message: 'Podany login już istnieje.' });
+        } else {
+            console.log('Podany login jest dostępny.');
+            res.json({ available: true, message: 'Podany login jest dostępny.' });
+        }
     });
 }
 
@@ -160,5 +185,8 @@ module.exports = {
     updateUser,
     makeAdmin,
     deleteUser,
-    getAllUsers
+    getAllUsers,
+    makePizzer,
+    makeDostawca,
+    isLoginAvailable,
 };

@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import {deSetUser} from "../features/user/userSlice";
 
 const Information = () => {
     const user = useSelector((state) => state.user.user);
     const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
     const [orders, setOrders] = useState([]);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -25,7 +29,7 @@ const Information = () => {
         if (isLoggedIn) {
             fetchOrders();
         }
-    }, [user.Id_osoba, isLoggedIn]);
+    }, [user?.Id_osoba, isLoggedIn]);
 
     const deleteUser = async (userId) => {
         console.log(userId)
@@ -37,7 +41,8 @@ const Information = () => {
             if (!response.ok) {
                 throw new Error('Błąd podczas wysyłania danych');
             }
-            await generateUserListHTML();
+            navigate('/pizza');
+            dispatch(deSetUser());
         } catch (e) {
             console.log(e)
         }
@@ -50,20 +55,17 @@ const Information = () => {
                 <div>
                     <h1>Informacje o koncie</h1>
                     <ul>
-                        <li>{user.Id_osoba}</li>
-                        <li><strong>Imię:</strong> {user.Imie}</li>
-                        <li><strong>Nazwisko:</strong> {user.Nazwisko}</li>
-                        <li><strong>Rodzaj:</strong> {user.Rodzaj}</li>
-                        <li><strong>Adres:</strong> {user.Adres}</li>
+                        <li><strong>Imię:</strong> {user?.Imie}</li>
+                        <li><strong>Nazwisko:</strong> {user?.Nazwisko}</li>
+                        <li><strong>Rodzaj:</strong> {user?.Rodzaj}</li>
+                        <li><strong>Adres:</strong> {user?.Adres}</li>
                     </ul>
-                    <button onClick={() => deleteUser(user.Id_osoba)}>Usuń konto</button>
+                    <button onClick={() => deleteUser(user?.Id_osoba)}>Usuń konto</button>
                     <h2>Zamówienia</h2>
                     <div>
                         {orders.map((order) => (
                             <div key={order.id_zamowienia}>
-                                {/* Wyświetlanie informacji o zamówieniach */}
                                 <p>ID Zamówienia: {order.id_zamowienia}</p>
-                                {/* Dodaj inne informacje o zamówieniach, które chcesz wyświetlić */}
                             </div>
                         ))}
                     </div>

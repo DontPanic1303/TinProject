@@ -37,3 +37,13 @@ body {
 input {
     margin-right: 5px;
 }
+
+.pagination {
+    display: flex;
+    list-style: none;
+}
+
+.pagination li {
+    margin: 0 5px;
+    cursor: pointer;
+}

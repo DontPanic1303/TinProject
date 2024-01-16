@@ -15,15 +15,21 @@ app.post('/user',UserController.addUser);
 
 app.put('/user/:id',UserController.updateUser);
 
-app.put('/user/:id/grand',UserController.makeAdmin);
+app.put('/user/:id/pizzer',UserController.makePizzer);
 
-app.delete('/user/:id', UserController.deleteUser)
+app.put('/user/:id/dostawca',UserController.makeDostawca);
 
-app.get('/users',UserController.getAllUsers)
+app.put('/user/:id/admin',UserController.makeAdmin);
 
-app.get('/pizza',PizzaController.getPizza)
+app.delete('/user/:id', UserController.deleteUser);
 
-app.post('/addPizza',PizzaController.addPizza)
+app.get('/user/login', UserController.isLoginAvailable);
+
+app.get('/users',UserController.getAllUsers);
+
+app.get('/pizza',PizzaController.getPizza);
+
+app.post('/addPizza',PizzaController.addPizza);
 
 app.listen(port, () => {
   console.log(`Aplikacja działa na http://localhost:${port}`);
