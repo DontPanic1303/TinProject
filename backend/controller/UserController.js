@@ -183,6 +183,32 @@ function isLoginAvailable(req,res) {
     });
 }
 
+async function getUserById(req, res) {
+    const {id} = req.params;
+
+    try {
+        const row = await getAsync('SELECT * FROM Osoba WHERE Id_osoba = ?', [id]);
+
+        if (!row) {
+            res.status(404).json({error: 'Błędne id'});
+            return;
+        }
+
+        const User = {
+            Id_osoba: row.Id_osoba,
+            Imie: row.Imie,
+            Nazwisko: row.Nazwisko,
+            Rodzaj: row.Rodzaj,
+            Adres: row.Adres
+        };
+
+        res.status(200).json(User);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({error: 'Błąd bazy danych'});
+    }
+}
+
 module.exports = {
     loginUser,
     addUser,
@@ -193,4 +219,5 @@ module.exports = {
     makePizzer,
     makeDostawca,
     isLoginAvailable,
+    getUserById,
 };

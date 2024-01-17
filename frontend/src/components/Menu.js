@@ -60,7 +60,12 @@ const Menu = () => {
            <div class="left-side">
                 <Link to="/pizza" class="link-container">Zamów pizze</Link>
                {isLoggedIn && (<Link to="/information" class="link-container">Informacie o koncie</Link>)}
-               {isAdmin && (<Link to="/userList" class="link-container">Lista urzytkowników</Link>)}
+               {isAdmin && (
+                   <Link to="/userList" class="link-container">Lista urzytkowników</Link>
+               )}
+               {isAdmin && (
+                   <Link to="/orderList" class="link-container">Lista zamówień</Link>
+               )}
            </div>
            <div class="right-side">
                {isLoggedIn ? (
