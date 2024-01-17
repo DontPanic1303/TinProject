@@ -6,8 +6,9 @@ import Pizza from "./components/Pizza";
 import Registration from "./components/Registration";
 import Information from "./components/Information";
 import UserList from "./components/UserList";
-import OrderList from "./components/OrderList"
-import OrderItem from "./components/OrderItem"
+import OrderList from "./components/OrderList";
+import OrderItem from "./components/OrderItem";
+import Person from "./components/Perosn";
 import './App.css';
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
             <Route path="/userList" element={<UserList/>} />
             <Route path="/orderList" element={<OrderList/>} />
             <Route path="/orderList/:id" element={<OrderItem/>} />
+            <Route path="/person/:id" element={<Person/>} />
         </Routes>
       </Router>
   );

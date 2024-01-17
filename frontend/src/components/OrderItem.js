@@ -49,14 +49,61 @@ const OrderItem = () =>{
     return (
         <div>
             {isAdmin ? (
-                <Link to="/orderList">Podrót do listy</Link>
+                    <div>
+                        <Link to="/orderList">Podrót do listy</Link>
+                        <h1>Szczeguły zamówienia nr {id}</h1>
+                        <h2>Dostawa</h2>
+                        <div>
+                            {isNaN(orderPersons.Dostawca) ? (
+                                <p>Brak</p>
+                            ):(
+                                <p><Link to={`/person/:${orderPersons?.Dostawca}`}>Dostawca: {orderPersons.Dostawca}</Link></p>
+                            )}
+                            {isNaN(orderPersons.Odbiorca) ? (
+                                <p>Adres: {orderPersons.Adres}</p>
+                            ):(
+                                <p><Link to={`/person/:${orderPersons?.Odbiorca}`}>Odbiorca: {orderPersons.Odbiorca}</Link></p>
+                            )}
+                        </div>
+                    </div>
             ) : (
-                <Link to="/information">Podrót do listy</Link>
+                <div>
+                    <Link to="/information">Podrót do listy</Link>
+                    <h1>Szczeguły zamówienia nr {id}</h1>
+                    <div>
+                        {isNaN(orderPersons.Dostawca) ? (
+                            <p>Brak</p>
+                        ):(
+                            <p>Dostawca: {orderPersons.Dostawca}</p>
+                        )}
+                    </div>
+                </div>
             )}
-            <h1>Szczeguły zamówienia nr {id}</h1>
+            <h2>Pizze</h2>
             {orderPizzas.map(order => (
                 <div key={order.Id_pizzy}>
-
+                    <p>Nazwa: {order.Nazwa}</p>
+                    <p>Cena: {order.cena}</p>
+                    <p>Rozmiar: {order.rozmiar}</p>
+                    <p>Składniki: {order.Skladniki}</p>
+                    <p>Ilosc: {order.Ilosc}</p>
+                    {isAdmin ? (
+                        <div>
+                            {isNaN(orderPersons.Pizzer) ? (
+                                <p>Brak</p>
+                            ):(
+                                <p><Link to={`/person/:${orderPersons?.Pizzer}`}>Pizzer: {orderPersons.Pizzer}</Link></p>
+                            )}
+                        </div>
+                    ) : (
+                        <div>
+                            {isNaN(orderPersons.Pizzer) ? (
+                                <p>Brak</p>
+                            ):(
+                                <p>Pizzer: {order.Pizzer}</p>
+                            )}
+                        </div>
+                    )}
                 </div>
             ))}
 
