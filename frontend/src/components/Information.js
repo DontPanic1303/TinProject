@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { deSetUser, setUser } from '../features/user/userSlice';
 
 const Information = () => {
@@ -170,9 +170,9 @@ const Information = () => {
                                 <div>
                                     <h2>Zamówienia</h2>
                                     <div>
-                                        {currentOrders.map((order) => (
-                                            <div key={order.id_zamowienia}>
-                                                <p>ID Zamówienia: {order.id_zamowienia}</p>
+                                        {currentOrders.map((orders) =>(
+                                            <div key={orders.Id_zam}>
+                                                <Link to={`/orderList/:${orders.Id_zam}`}>{orders.Id_zam}, {orders.data}</Link>
                                             </div>
                                         ))}
                                     </div>

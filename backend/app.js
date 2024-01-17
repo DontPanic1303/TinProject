@@ -46,6 +46,10 @@ app.get('/orders/:id',OrderController.getOrderByUserId);
 
 app.get('/orders',OrderController.getAllOrders);
 
+app.post('/orders',OrderController.makeNewOrder);
+
+app.post('/orders/:id',OrderController.addPizzasToOrder);
+
 app.listen(port, () => {
   console.log(`Aplikacja działa na http://localhost:${port}`);
 });

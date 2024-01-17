@@ -12,6 +12,8 @@ const Pizza = () => {
         Skladniki: '',
     });
     const [isEditing, setIsEditing] = useState(false);
+    const isAdmin = useSelector((state)=> state.user.isAdmin);
+    const [adres, setAdres] = useState("");
 
     const [pizzas,setPizzas] = useState([]);
     const [pizzasOrder, setPizzasOrder] = useState([]);
@@ -85,8 +87,60 @@ const Pizza = () => {
         });
     };
 
-    const handleSubmitOrder = (e) => {
+    const handleSubmitOrder = async (e) => {
+        let dataToSent = {}
+        if (isLoggedIn) {
+            dataToSent = {
+                Odbiorca: user.Id_osoba,
+            }
+        } else {
+            if (adres.trim().length<5){
+             alert("Podaj adres");
+             return;
+            }
+            dataToSent = {
+                Adres: adres,
+            }
+        }
 
+        try {
+            const response = await fetch('http://localhost:3001/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSent),
+            });
+
+            if (!response.ok) {
+                throw new Error('Błąd podczas wysyłania danych');
+            }
+            const responseData = await response.json();
+            await sentPizzasToOrder(JSON.stringify(responseData));
+        } catch (error) {
+            console.error('Błąd:', error.message);
+        }
+    }
+
+    const sentPizzasToOrder = async (order) => {
+        const id = order.id_zam;
+        try {
+            const response = await fetch(`http://localhost:3001/orders/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(pizzasOrder),
+            });
+
+            if (!response.ok) {
+                throw new Error('Błąd podczas wysyłania danych');
+            }
+            alert("Zostało złorzone zamówienie");
+            setPizzasOrder(null);
+        } catch (error) {
+            console.error('Błąd:', error.message);
+        }
     }
 
     const handleModify = (pizza) =>{
@@ -196,7 +250,7 @@ const Pizza = () => {
         }
     };
 
-    const isAdmin = useSelector((state)=> state.user.isAdmin);
+
     return (
         <div class="top-side">
             <div class="left-side">

@@ -53,10 +53,15 @@ function makeNewOrder(req, res) {
 
 }
 
+function addPizzasToOrder(req, res) {
+
+}
+
 module.exports = {
     getAllOrders,
     getOrderPizzasById,
     getOrderPersonsById,
     getOrderByUserId,
     makeNewOrder,
+    addPizzasToOrder,
 }
