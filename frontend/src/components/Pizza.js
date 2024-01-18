@@ -102,7 +102,7 @@ const Pizza = () => {
                 Adres: adres,
             }
         }
-
+        console.log(dataToSent);
         try {
             const response = await fetch('http://localhost:3001/orders', {
                 method: 'POST',
@@ -116,7 +116,8 @@ const Pizza = () => {
                 throw new Error('Błąd podczas wysyłania danych');
             }
             const responseData = await response.json();
-            await sentPizzasToOrder(JSON.stringify(responseData));
+            console.log(responseData);
+            await sentPizzasToOrder(responseData);
         } catch (error) {
             console.error('Błąd:', error.message);
         }
@@ -124,6 +125,8 @@ const Pizza = () => {
 
     const sentPizzasToOrder = async (order) => {
         const id = order.id_zam;
+        console.log(id);
+        console.log(pizzasOrder);
         try {
             const response = await fetch(`http://localhost:3001/orders/${id}`, {
                 method: 'POST',
@@ -137,7 +140,8 @@ const Pizza = () => {
                 throw new Error('Błąd podczas wysyłania danych');
             }
             alert("Zostało złorzone zamówienie");
-            setPizzasOrder(null);
+            setPizzasOrder([]);
+            setAdres('');
         } catch (error) {
             console.error('Błąd:', error.message);
         }
@@ -255,7 +259,7 @@ const Pizza = () => {
         <div class="top-side">
             <div class="left-side">
             <h1>Pizze</h1>
-            {currentPizzas.map((pizza) => (
+            {currentPizzas && currentPizzas.map((pizza) => (
                 <div>
                     <PizzaItem key={pizza.Id_pizzy} pizza={pizza} isAdmin={isAdmin} handleModify={{handleModify}} addPizzaToOrder={addPizzaToOrder} deletePizza={{deletePizza}}/>
                     <br/>
@@ -339,18 +343,17 @@ const Pizza = () => {
                     Adres: {isLoggedIn ? (
                         <div>
                             {user.Adres}<br/>
-                            <button onClick={() => handleSubmitOrder}>Zamów</button> <br/>
+                            <button onClick={() => handleSubmitOrder()}>Zamów</button> <br/>
                         </div>
                     ) : (
-
-                        <form onSubmit={handleSubmitOrder}>
+                        <div>
                             <label>
-                                <input type="text" name="Adres" value={formData.Nazwa} onChange={handleChange}/> <br/>
+                                <input type="text" name="Adres" value={adres} onChange={(e) => setAdres(e.target.value)}/> <br/>
                             </label>
-                            <button type="submit">Zamów</button> <br/>
-                        </form>
+                            <button onClick={() => handleSubmitOrder()}>Zamów</button><br/>
+                        </div>
                     )}
-                        {pizzasOrder.map((pizza) => (
+                        {pizzasOrder && pizzasOrder.map((pizza) => (
                             <div key={pizza.Id_pizzy}>
                                 <p>Nazwa: {pizza.nazwa}</p>
                                 <p>Ilość: {pizza.ilosc}</p>

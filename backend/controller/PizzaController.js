@@ -27,6 +27,7 @@ function getAsync(query, params) {
     });
 }
 
+
 function getPizza(req, res) {
     const query = 'SELECT * FROM pizza';
 

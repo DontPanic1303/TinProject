@@ -8,30 +8,40 @@ const Information = () => {
     const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
     const [orders, setOrders] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [ordersPerPage] = useState(5)
+    const [ordersPerPage] = useState(10)
     const [isEditing, setIsEditing] = useState(false);
     const [editedUser, setEditedUser] = useState({ ...user });
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const response = await fetch(`http://localhost:3001/orders/${user?.Id_osoba}`);
+    const fetchOrders = async () => {
+        try {
+            const response = await fetch(`http://localhost:3001/orders/${user?.Id_osoba}`);
 
-                if (!response.ok) {
-                    throw new Error('Błąd podczas pobierania zamówień');
-                }
-
-                const ordersData = await response.json();
-                setOrders(ordersData);
-            } catch (error) {
-                console.error('Błąd:', error.message);
+            if (!response.ok) {
+                throw new Error('Błąd podczas pobierania zamówień');
             }
-        };
 
+            const ordersData = await response.json();
+            console.log("Pobrane ordery", ordersData);
+            return ordersData;
+        } catch (error) {
+            console.error('Błąd:', error.message);
+        }
+    };
+
+    const putOrders = async () => {
+        try {
+            const ordersData = await fetchOrders();
+            setOrders(ordersData);
+        } catch (error) {
+            console.error('Błąd generowania listy użytkowników:', error);
+        }
+    }
+
+    useEffect(() => {
         if (isLoggedIn && user.Rodzaj === 'Klient') {
-            fetchOrders();
+            putOrders();
         }
     }, [user?.Id_osoba, isLoggedIn]);
 
@@ -172,7 +182,8 @@ const Information = () => {
                                     <div>
                                         {currentOrders.map((orders) =>(
                                             <div key={orders.Id_zam}>
-                                                <Link to={`/orderList/:${orders.Id_zam}`}>{orders.Id_zam}, {orders.data}</Link>
+                                               <p><Link to={`/orderList/${orders.Id_zam}`}>Zamówienie nr: {orders.Id_zam}, z dnia: {orders.data}</Link></p>
+                                                <br/>
                                             </div>
                                         ))}
                                     </div>

@@ -54,15 +54,17 @@ const OrderItem = () =>{
                         <h1>Szczeguły zamówienia nr {id}</h1>
                         <h2>Dostawa</h2>
                         <div>
-                            {isNaN(orderPersons.Dostawca) ? (
-                                <p>Brak</p>
+                            {orderPersons.Dostawca === null ? (
+                                <p>Dostawca: Brak</p>
+
                             ):(
-                                <p><Link to={`/person/:${orderPersons?.Dostawca}`}>Dostawca: {orderPersons.Dostawca}</Link></p>
+                                <p><Link to={`/person/${orderPersons?.Dostawca}`}>Dostawca: {orderPersons.Dostawca}</Link></p>
                             )}
-                            {isNaN(orderPersons.Odbiorca) ? (
+                            <br/>
+                            {orderPersons.Odbiorca === null ? (
                                 <p>Adres: {orderPersons.Adres}</p>
                             ):(
-                                <p><Link to={`/person/:${orderPersons?.Odbiorca}`}>Odbiorca: {orderPersons.Odbiorca}</Link></p>
+                                <p><Link to={`/person/${orderPersons?.Odbiorca}`}>Odbiorca: {orderPersons.Odbiorca}</Link></p>
                             )}
                         </div>
                     </div>
@@ -71,8 +73,8 @@ const OrderItem = () =>{
                     <Link to="/information">Podrót do listy</Link>
                     <h1>Szczeguły zamówienia nr {id}</h1>
                     <div>
-                        {isNaN(orderPersons.Dostawca) ? (
-                            <p>Brak</p>
+                        {orderPersons.Dostawca === null  ? (
+                            <p>Dostawca: Brak</p>
                         ):(
                             <p>Dostawca: {orderPersons.Dostawca}</p>
                         )}
@@ -80,7 +82,7 @@ const OrderItem = () =>{
                 </div>
             )}
             <h2>Pizze</h2>
-            {orderPizzas.map(order => (
+            {orderPizzas && orderPizzas.map(order => (
                 <div key={order.Id_pizzy}>
                     <p>Nazwa: {order.Nazwa}</p>
                     <p>Cena: {order.cena}</p>
@@ -89,21 +91,22 @@ const OrderItem = () =>{
                     <p>Ilosc: {order.Ilosc}</p>
                     {isAdmin ? (
                         <div>
-                            {isNaN(orderPersons.Pizzer) ? (
-                                <p>Brak</p>
+                            {order?.Pizzer === null ? (
+                                <p>Pizzer: Brak</p>
                             ):(
-                                <p><Link to={`/person/:${orderPersons?.Pizzer}`}>Pizzer: {orderPersons.Pizzer}</Link></p>
+                                <p><Link to={`/person/${order?.Pizzer}`}>Pizzer: {order?.Pizzer}</Link></p>
                             )}
                         </div>
                     ) : (
                         <div>
-                            {isNaN(orderPersons.Pizzer) ? (
-                                <p>Brak</p>
+                            {order?.Pizzer === null ? (
+                                <p>Pizzer: Brak</p>
                             ):(
-                                <p>Pizzer: {order.Pizzer}</p>
+                                <p>Pizzer: {order?.Pizzer}</p>
                             )}
                         </div>
                     )}
+                    <br/>
                 </div>
             ))}
 

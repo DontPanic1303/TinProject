@@ -5,7 +5,7 @@ const OrderList = () =>{
     const isAdmin = useSelector((state) => state.user.isAdmin);
     const [orders, setOrders] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [ordersPerPage] = useState(8);
+    const [ordersPerPage] = useState(20);
 
     const fetchOrders = async () => {
         try {
@@ -21,6 +21,7 @@ const OrderList = () =>{
     const generateOrderListHTML = async () => {
         try {
             const ordersData = await fetchOrders();
+            console.log(ordersData);
             setOrders(ordersData);
         } catch (error) {
             console.error('Błąd generowania listy zamówień:', error);
@@ -48,7 +49,8 @@ const OrderList = () =>{
                 <div>
                     {currentOrders.map((orders) =>(
                         <div key={orders.Id_zam}>
-                            <Link to={`/orderList/:${orders.Id_zam}`}>{orders.Id_zam}, {orders.data}</Link>
+                            <p><Link to={`/orderList/${orders.Id_zam}`}>Zamówienie nr: {orders.Id_zam}, z dnia: {orders.data}</Link></p>
+                            <br/>
                         </div>
                     ))}
                     <ul className="pagination">
