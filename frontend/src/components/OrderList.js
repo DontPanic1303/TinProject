@@ -44,9 +44,10 @@ const OrderList = () =>{
     const totalPages = Math.ceil(orders.length / ordersPerPage);
 
     return (
-        <div>
+        <div className="form-body">
             {isAdmin ? (
                 <div>
+                <div className="form-container">
                     {currentOrders.map((orders) =>(
                         <div key={orders.Id_zam}>
                             <p><Link to={`/orderList/${orders.Id_zam}`}>Zamówienie nr: {orders.Id_zam}, z dnia: {orders.data}</Link></p>
@@ -60,6 +61,7 @@ const OrderList = () =>{
                         <li onClick={() => handlePageChange(currentPage + 1)}>&gt;</li>
                         <li onClick={() => handlePageChange(totalPages)}>&gt;|</li>
                     </ul>
+                </div>
                 </div>
             ):(
                 <div>

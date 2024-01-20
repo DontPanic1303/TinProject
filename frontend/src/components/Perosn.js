@@ -33,7 +33,8 @@ const Person = () =>{
     }, []);
 
     return (
-        <div>
+        <div className="form-body">
+        <div className="form-container">
             {isAdmin ? (
                 <div>
                     <h1>Szczeguły osoby nr {id}</h1>
@@ -59,6 +60,7 @@ const Person = () =>{
                     <h1>Nie masz dostępu</h1>
                 </div>
             )}
+        </div>
         </div>
     )
 

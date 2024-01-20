@@ -76,7 +76,7 @@ const Menu = () => {
                     <div class="login-container">
                         Login: <input type="text" value={login} onChange={(e) => setLogin(e.target.value)} />
                         Haslo: <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                        <button onClick={handleLogin}>Zaloguj</button>
+                        <button onClick={handleLogin}>Zaloguj</button>&nbsp;
                         <Link to="/registration">
                             <button>Zarejestuj się</button>
                         </Link>

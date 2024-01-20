@@ -47,7 +47,8 @@ const OrderItem = () =>{
     }, []);
 
     return (
-        <div>
+        <div className="form-body">
+        <div className="form-container">
             {isAdmin ? (
                     <div>
                         <Link to="/orderList">Podrót do listy</Link>
@@ -84,6 +85,7 @@ const OrderItem = () =>{
             <h2>Pizze</h2>
             {orderPizzas && orderPizzas.map(order => (
                 <div key={order.Id_pizzy}>
+                    <p>Id pizzy: {order.Id_pizzy}</p>
                     <p>Nazwa: {order.Nazwa}</p>
                     <p>Cena: {order.cena}</p>
                     <p>Rozmiar: {order.rozmiar}</p>
@@ -111,6 +113,7 @@ const OrderItem = () =>{
             ))}
 
 
+        </div>
         </div>
     )
 

@@ -258,7 +258,11 @@ const Pizza = () => {
     return (
         <div class="top-side">
             <div class="left-side">
+                <div className="form-body">
+                <div className="form-container">
+                <br/>
             <h1>Pizze</h1>
+                <br/>
             {currentPizzas && currentPizzas.map((pizza) => (
                 <div>
                     <PizzaItem key={pizza.Id_pizzy} pizza={pizza} isAdmin={isAdmin} handleModify={{handleModify}} addPizzaToOrder={addPizzaToOrder} deletePizza={{deletePizza}}/>
@@ -272,13 +276,19 @@ const Pizza = () => {
                     <li onClick={() => handlePageChange(currentPage + 1)}>&gt;</li>
                     <li onClick={() => handlePageChange(totalPages)}>&gt;|</li>
                 </ul>
+                </div>
+                </div>
             </div>
             <div class="right-side">
+                <div className="form-body">
+                    <div className="form-container">
                 {isAdmin ? (
                     <div>
                         {isEditing ? (
                             <div>
+                                <br/>
                                 <h1>Edytuj informacje o pizie</h1>
+                                <br/>
                                 <form>
                                     <label>
                                         Nazwa:
@@ -314,7 +324,9 @@ const Pizza = () => {
                             </div>
                         ) : (
                             <div>
-                                <p>Dodaj pizze</p>
+                                <br/>
+                                <h2>Dodaj pizze</h2>
+                                <br/>
                                 <form onSubmit={handleSubmit}>
                                     <label>
                                         Nazwa:
@@ -362,6 +374,8 @@ const Pizza = () => {
                         ))}
                     </div>
                 )}
+                    </div>
+                </div>
             </div>
         </div>
     );
@@ -376,7 +390,7 @@ const PizzaItem = ({ pizza, isAdmin, handleModify, addPizzaToOrder, deletePizza}
             <p>Skladniki: {pizza.Skladniki}</p>
             {isAdmin ? (
                 <div>
-                    <button onClick={() => handleModify.handleModify(pizza)}>Zmodyfikuj</button>
+                    <button onClick={() => handleModify.handleModify(pizza)}>Zmodyfikuj</button>&nbsp;
                     <button onClick={()=> deletePizza.deletePizza(pizza.Id_pizzy)}>Usuń</button>
                 </div>
             ) : <button onClick={() => addPizzaToOrder(pizza.Id_pizzy, pizza.Nazwa)}>Zamów</button>}

@@ -1,1 +1,1 @@
-export const NotFound = () => <div>404 Not Found</div>;
+export const NotFound = () => <div className="NotFound">404 Not Found</div>;

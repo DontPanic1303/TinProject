@@ -118,7 +118,8 @@ const Information = () => {
     };
 
     return (
-        <div>
+        <div  className="form-body">
+        <div className="form-container">
             {isLoggedIn ? (
                 <div>
                     {isEditing ? (
@@ -151,7 +152,7 @@ const Information = () => {
 
                                 <button type="button" onClick={handleCancelEdit}>
                                     Anuluj
-                                </button>
+                                </button>&nbsp;
                                 <button type="button" onClick={handleSaveEdit}>
                                     Zapisz
                                 </button>
@@ -174,11 +175,13 @@ const Information = () => {
                                     <strong>Adres:</strong> {user?.Adres}
                                 </li>
                             </ul>
-                            <button onClick={() => deleteUser(user?.Id_osoba)}>Usuń konto</button>
+                            <button onClick={() => deleteUser(user?.Id_osoba)}>Usuń konto</button>&nbsp;
                             <button onClick={handleEdit}>Zmodyfikuj</button>
                             {user.Rodzaj === 'Klient' && (
                                 <div>
+                                    <br/>
                                     <h2>Zamówienia</h2>
+                                    <br/>
                                     <div>
                                         {currentOrders.map((orders) =>(
                                             <div key={orders.Id_zam}>
@@ -204,6 +207,7 @@ const Information = () => {
                     <h1>Proszę się zalogować</h1>
                 </div>
             )}
+        </div>
         </div>
     );
 };

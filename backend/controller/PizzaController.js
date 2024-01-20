@@ -63,11 +63,12 @@ async function addPizza(req, res) {
 
 async function deletePizza(req, res) {
     const { id } = req.params;
+    console.log(id);
 
     try {
-        await runAsync('DELETE FROM Zamowiania WHERE Id_zam IN (SELECT Id_zam FROM Pizza_do_zamowienia WHERE Id_pizzy = ?)', [id]);
-
         await runAsync('DELETE FROM Pizza_do_zamowienia WHERE Id_pizzy = ?', [id]);
+
+        await runAsync('DELETE FROM Zamowiania WHERE Id_zam NOT IN (SELECT DISTINCT Id_zam FROM Pizza_do_zamowienia)');
 
         await runAsync('DELETE FROM Pizza WHERE Id_pizzy = ?', [id]);
 

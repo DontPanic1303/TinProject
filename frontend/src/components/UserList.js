@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 const UserList = () => {
     const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [usersPerPage] = useState(5);
+    const [usersPerPage] = useState(4);
     const isAdmin = useSelector((state) => state.user.isAdmin);
     const userLoged = useSelector((state) => state.user.user);
 
@@ -114,9 +114,9 @@ const UserList = () => {
     }, []);
 
     return (
-        <div>
+        <div className="form-body">
             {isAdmin ? (
-                <div>
+                <div className="form-container">
                     {filteredUsers.map((user) => (
                         <div key={user.Id_osoba}>
                             <p>ID: {user.Id_osoba}</p>
@@ -127,9 +127,10 @@ const UserList = () => {
                             <button onClick={() => deleteUser(user.Id_osoba)}>Usuń</button>
                             {user.Rodzaj === 'Klient' ? (
                                 <div>
-                                    <button onClick={() => makeAdmin(user.Id_osoba)}>Ustaw admina</button>
-                                    <button onClick={() => makePizzer(user.Id_osoba)}>Ustaw pizzera</button>
-                                    <button onClick={() => makeDostawca(user.Id_osoba)}>Ustaw dostawce</button>
+                                    <br/>
+                                    <button onClick={() => makeAdmin(user.Id_osoba)}>Ustaw admina</button>&nbsp;
+                                    <button onClick={() => makePizzer(user.Id_osoba)}>Ustaw pizzera</button>&nbsp;
+                                    <button onClick={() => makeDostawca(user.Id_osoba)}>Ustaw dostawce</button>&nbsp;
                                 </div>
                             ) : (
                                 <br/>
